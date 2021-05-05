@@ -1,7 +1,8 @@
-type Account = {
-  cpf: string
+interface Account
+{
   name: string
   id: string
+  cpf: string
   statement: []
 }
 

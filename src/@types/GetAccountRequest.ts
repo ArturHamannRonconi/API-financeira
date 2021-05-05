@@ -1,6 +1,6 @@
 import { Request } from 'express'
 
-import Account from './Account'
+import Account from '../database/Entities/Account'
 
 interface GetAccountRequest extends Request 
 {
