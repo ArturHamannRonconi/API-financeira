@@ -44,7 +44,7 @@ routes.get('/accounts/:id', (req, res) => {
   return res.json({error: null, result: account})
 })
 
-routes.route('/statement')
+routes.route('/statement/:cpf')
   .get(verifiyExistsAccount, (req: GetAccountRequest, res) => res.json({ error: null, result: req.account.statement }))
 
 export default routes
