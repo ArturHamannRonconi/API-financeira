@@ -16,10 +16,17 @@ router.route('/accounts')
 router.route('/accounts/:id')
   .get(accountController.findOne)
 
+
 router.route('/statement/:cpf')
   .get(
     accountController.verifiyExistsAccount,
     accountController.getStatement
+  )
+
+router.route('/deposit')
+  .post(
+    accountController.verifiyExistsAccount,
+    accountController.deposit
   )
 
 export default router

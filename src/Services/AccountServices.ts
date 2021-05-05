@@ -2,6 +2,7 @@ import { v4 as generateUUID } from 'uuid'
 
 import Account from '../database/Entities/Account' 
 import { accounts } from '../database/database' 
+import Statement from '../@types/Statement'
 
 class AccountServices
 {
@@ -21,7 +22,7 @@ class AccountServices
   verifyAccountAlreadyExists({ cpf }: Pick<Account, 'cpf'>, returnAccount: boolean): Account | void
   {
     const account = accounts.find(account => account.cpf === cpf)
-
+    
     if(returnAccount && !account) throw new Error('404/Account not found') 
     if(!returnAccount && account) throw new Error('400/Account already exists')
     if(returnAccount && account)  return account
@@ -30,6 +31,11 @@ class AccountServices
   {
     accounts.push({ cpf, name, statement: [], id: generateUUID() }) 
   }
+  deposit(statement: Statement, account: Account): void
+  {
+    account.statement.push(statement)
+  }
+
 }
 
 export default AccountServices

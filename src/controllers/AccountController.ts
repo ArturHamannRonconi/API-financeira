@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express'
 import Account from '../database/Entities/Account'
 import AccountServices from '../Services/AccountServices'
 import GetAccountRequest from '../@types/GetAccountRequest'
+import Statement from '../@types/Statement'
 
 type MiddlewareReturn = Response | void
 
@@ -33,7 +34,11 @@ class AccountController
   verifyAccountAlreadyExists(req: Request, res: Response, next: NextFunction): MiddlewareReturn
   {
     try {
-      const { cpf } = req.body as Account
+      let cpf: string
+
+      if(req.method === 'POST') cpf = req.body.cpf as string
+      if(req.method === 'GET')  cpf = req.params.cpf as string
+
       accountServices.verifyAccountAlreadyExists({ cpf }, false) 
 
       return next()
@@ -54,7 +59,7 @@ class AccountController
   {
     try {
       let cpf: string
-
+      
       if(req.method === 'POST') cpf = req.body.cpf as string
       if(req.method === 'GET')  cpf = req.params.cpf as string
 
@@ -71,6 +76,21 @@ class AccountController
   {
     return res.json({ error: null, result: req.account.statement })
   }
+  deposit(req: GetAccountRequest, res: Response): MiddlewareReturn
+  {
+    const { amount, description } = req.body
+    const account = req.account as Account
+
+    const statementOperation: Statement = {
+      description,
+      amount,
+      created_at: new Date().toString(),
+      type: 'credit'
+    }
+    
+    accountServices.deposit(statementOperation, account)
+    return res.status(201).end()
+  } 
 }
 
 export default AccountController
