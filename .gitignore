@@ -3,3 +3,4 @@ node_modules/
 .eslintignore
 .eslintrc.json
 .env
+tsconfig.json
