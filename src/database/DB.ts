@@ -1,4 +1,4 @@
-import Database from '../@types/Database'
+import { Database } from '../@types'
 
 const database: Database = {
   accounts: [
